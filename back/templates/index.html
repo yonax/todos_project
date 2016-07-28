@@ -1,14 +1,15 @@
-{% load staticfiles %}
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Title</title>
+    {% render_bundle 'main' 'css' %}
   </head>
   <body>
     <div id=root>
       <h2>Hi from template!</h2>
     </div>
-    <script src='{% static "bundle.js" %}'></script>
+    {% render_bundle 'main' 'js' %}
   </body>
 </html>

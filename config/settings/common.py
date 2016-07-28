@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
+    'webpack_loader',
     'rest_framework',
     'back.tasks',
 )
@@ -133,7 +134,19 @@ STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
-    str(ROOT_DIR.path('front')),
+    str(ROOT_DIR.path('front', 'bundles')),
 )
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# Webpack
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': str(ROOT_DIR.path('front', 'bundles')) + '/', # must end with slash
+        'STATS_FILE': str(ROOT_DIR.path('webpack-stats.json')),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}

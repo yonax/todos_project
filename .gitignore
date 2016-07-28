@@ -1,3 +1,7 @@
 __pycache__
 *.pyc
 static_files
+node_modules
+npm-debug.log
+webpack-stats.json
+front/bundles
