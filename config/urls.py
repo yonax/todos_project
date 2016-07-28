@@ -7,5 +7,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url(r'^api/', include('back.tasks.urls')),
     url(settings.ADMIN_URL, include(admin.site.urls)),
 ]

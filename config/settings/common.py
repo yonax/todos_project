@@ -28,6 +28,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'back.tasks',
 )
 
 ADMIN_URL = env('DJANGO_ADMIN_URL', default=r'^admin/')
