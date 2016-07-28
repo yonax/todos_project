@@ -18,7 +18,7 @@ export default class Task extends Component {
 
     return (
       <li style={style}>
-        <input type="checkbox" value={done} onChange={toggle} />
+        <input type="checkbox" checked={done} onChange={toggle} />
         <span>{text}</span>
         <span style={{color: 'red', marginLeft: '1em', cursor: 'pointer'}}
               onClick={remove}>X</span>

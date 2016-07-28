@@ -24,7 +24,7 @@ export default class TaskList extends Component {
       <ul style={style}>
         {tasks.map(({id, ...props}) =>
           <Task key={id}
-                toggle={toggleTask.bind(null, id, !props.value)}
+                toggle={toggleTask.bind(null, id, !props.done)}
                 remove={removeTask.bind(null, id)}
                 {...props} />
         )}
