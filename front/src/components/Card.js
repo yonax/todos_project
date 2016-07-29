@@ -12,18 +12,33 @@ export default class Card extends Component {
       id: PropTypes.number.isRequired,
       text: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
-    }))
+    })),
+    removeCard: PropTypes.func.isRequired,
+  }
+  confirmRemove() {
+    if (confirm("Are you sure?")) {
+      this.props.removeCard();
+    }
   }
   render() {
     const { name, addTask, removeTask, toggleTask, tasks } = this.props;
     const style = {
       backgroundColor: '#eff0f5',
       padding: '0.4em',
-      margin: '1em 0'
+      margin: '1em 0',
+      position: 'relative'
+    }
+    const removeBtnStyle = {
+      position: 'absolute',
+      top: '5px',
+      right: '5px',
+      color: 'red',
+      cursor: 'pointer'
     }
     return (
       <div style={style}>
         <h3>{name}</h3>
+        <span style={removeBtnStyle} onClick={::this.confirmRemove}>X</span>
         <AddTask addTask={addTask} />
         <TaskList tasks={tasks}
                   toggleTask={toggleTask}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import update from 'react-addons-update';
+import update from 'react-addons-update'
 import Card from './components/Card'
+import AddCard from './components/AddCard'
 import { TaskApi, CardApi } from './api'
 
 export default class App extends Component {
@@ -67,18 +68,39 @@ export default class App extends Component {
       }))
     );
   }
+  removeCard(id) {
+    const cardIdx = this.state.cards.findIndex(c => c.id === id);
+    CardApi.remove(id).then(_ =>
+      this.setState(update(this.state, {
+        cards: {
+          $splice: [[cardIdx, 1]]
+        }
+      }))
+    );
+  }
+  addCard(name) {
+    CardApi.create(name).then(card => {
+      this.setState(update(this.state, {
+        cards: {
+          $push: [card]
+        }
+      }))
+    });
+  }
   render() {
     const { cards } = this.state;
     return (
       <div>
-      {cards.map(({id, name, tasks}) =>
-        <Card key={id}
-              addTask={this.addTask.bind(this, id)}
-              removeTask={this.removeTask.bind(this, id)}
-              toggleTask={this.toggleTask.bind(this, id)}
-              tasks={tasks}
-              name={name} />
-      )}
+        <AddCard addCard={::this.addCard} />
+        {cards.map(({id, name, tasks}) =>
+          <Card key={id}
+                addTask={this.addTask.bind(this, id)}
+                removeTask={this.removeTask.bind(this, id)}
+                toggleTask={this.toggleTask.bind(this, id)}
+                tasks={tasks}
+                name={name}
+                removeCard={this.removeCard.bind(this, id)} />
+        )}
       </div>
     );
   }
