@@ -25,7 +25,7 @@ export default class Card extends Component {
     const style = {
       backgroundColor: '#eff0f5',
       padding: '0.4em',
-      margin: '1em 0',
+      marginLeft: '1em',
       position: 'relative'
     }
     const removeBtnStyle = {

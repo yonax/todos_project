@@ -89,9 +89,16 @@ export default class App extends Component {
   }
   render() {
     const { cards } = this.state;
+    const style = {
+      display: 'flex',
+      flexFlow: 'row nowrap',
+      alignItems: 'flex-start',
+      margin: '1em 0'
+    }
     return (
       <div>
         <AddCard addCard={::this.addCard} />
+        <div style={style}>
         {cards.map(({id, name, tasks}) =>
           <Card key={id}
                 addTask={this.addTask.bind(this, id)}
@@ -101,6 +108,7 @@ export default class App extends Component {
                 name={name}
                 removeCard={this.removeCard.bind(this, id)} />
         )}
+        </div>
       </div>
     );
   }
