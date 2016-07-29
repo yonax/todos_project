@@ -4,6 +4,7 @@ import TaskList from './TaskList'
 
 export default class Card extends Component {
   static propTypes = {
+    name: PropTypes.string.isRequired,
     addTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     toggleTask: PropTypes.func.isRequired,
