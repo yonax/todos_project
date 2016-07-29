@@ -8,13 +8,13 @@ export function fetchAll() {
   .then(response => response.json());
 }
 
-export function create(text) {
+export function create(card, text) {
   return fetch('/api/tasks/', {
       method: 'POST',
       headers: new Headers({
         'Content-type': 'application/json'
       }),
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ text, card })
     })
     .then(response => response.json())
 }
