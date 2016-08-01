@@ -3,7 +3,7 @@ import update from 'react-addons-update'
 import Card from './components/Card'
 import AddCard from './components/AddCard'
 import { TaskApi, CardApi } from './api'
-import './styles/style.css';
+import '../styles/style.css';
 
 export default class App extends Component {
   constructor(props) {
