@@ -1,12 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Task from './Task'
 
-const style = {
-  margin: '0',
-  padding: '0',
-  listStyle: 'none'
-};
-
 export default class TaskList extends Component {
   static propTypes = {
     removeTask: PropTypes.func.isRequired,
@@ -22,7 +16,7 @@ export default class TaskList extends Component {
     const { tasks, removeTask, toggleTask, editTask } = this.props;
 
     return (
-      <ul style={style}>
+      <div>
         {tasks.map(({id, ...props}) =>
           <Task key={id}
                 toggle={toggleTask.bind(null, id, !props.done)}
@@ -30,7 +24,7 @@ export default class TaskList extends Component {
                 edit={editTask.bind(null, id)}
                 {...props} />
         )}
-      </ul>
+      </div>
     )
   }
 }

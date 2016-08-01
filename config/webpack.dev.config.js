@@ -31,6 +31,9 @@ module.exports = (opts) => {
         loader: ['babel'],
         exclude: /node_modules/,
         include: path.join(ROOT, 'front', 'src')
+      }, {
+        test: /\.css$/,
+        loader: "style-loader!css-loader"
       }]
     }
   }

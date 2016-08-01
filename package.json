@@ -17,9 +17,12 @@
     "babel-preset-es2015-webpack": "^6.4.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^2.0.0-beta.3",
     "react": "^15.2.1",
     "react-addons-update": "^15.2.1",
     "react-dom": "^15.2.1",
+    "style-loader": "^0.13.1",
     "webpack": "^2.1.0-beta.20",
     "webpack-bundle-tracker": "0.0.93"
   },

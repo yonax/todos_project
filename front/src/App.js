@@ -3,6 +3,7 @@ import update from 'react-addons-update'
 import Card from './components/Card'
 import AddCard from './components/AddCard'
 import { TaskApi, CardApi } from './api'
+import './styles/style.css';
 
 export default class App extends Component {
   constructor(props) {
@@ -108,16 +109,10 @@ export default class App extends Component {
   }
   render() {
     const { cards } = this.state;
-    const style = {
-      display: 'flex',
-      flexFlow: 'row nowrap',
-      alignItems: 'flex-start',
-      margin: '1em 0'
-    }
     return (
-      <div>
+      <div className="app">
         <AddCard addCard={::this.addCard} />
-        <div style={style}>
+        <div className="cards">
         {cards.map(({id, name, tasks}) =>
           <Card key={id}
                 addTask={this.addTask.bind(this, id)}

@@ -1,11 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom';
 
-const style = {
-  padding: "0.8em",
-  margin: "0.4em 0",
-  border: "1px dashed"
-}
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
@@ -57,21 +52,23 @@ export default class Task extends Component {
     const justView = (
       <div>
         <input type="checkbox" checked={done} onChange={toggle} />
-        <span>{text}</span>
-        <span style={{color: 'red', marginLeft: '1em', cursor: 'pointer'}}
-              onClick={remove}>X</span>
+        <span className="task-text">{text}</span>
+        <span className="remove-btn" onClick={remove}>✖</span>
       </div>
     );
     const editor = (
+      <div>
         <input ref="editField" type="text" value={this.state.text}
                onBlur={::this.handleSubmit}
                onChange={::this.handleChange}
                onKeyDown={::this.handleKeyDown} />
+      </div>
     )
     return (
-      <li style={style} onDoubleClick={() => this.setState({ editing: true })}>
+      <div className="task-item"
+           onDoubleClick={() => this.setState({ editing: true })}>
         { editing ? editor : justView }
-      </li>
+      </div>
     )
   }
 }

@@ -23,23 +23,14 @@ export default class Card extends Component {
   }
   render() {
     const { name, addTask, removeTask, toggleTask, editTask, tasks } = this.props;
-    const style = {
-      backgroundColor: '#eff0f5',
-      padding: '0.4em',
-      marginLeft: '1em',
-      position: 'relative'
-    }
-    const removeBtnStyle = {
-      position: 'absolute',
-      top: '5px',
-      right: '5px',
-      color: 'red',
-      cursor: 'pointer'
-    }
     return (
-      <div style={style}>
-        <h3>{name}</h3>
-        <span style={removeBtnStyle} onClick={::this.confirmRemove}>X</span>
+      <div className="card">
+        <div className="card-header">
+          <h3>{name}</h3>
+          <span className="remove-btn" onClick={::this.confirmRemove}>
+              ✖
+          </span>
+        </div>
         <AddTask addTask={addTask} />
         <TaskList tasks={tasks}
                   toggleTask={toggleTask}

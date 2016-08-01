@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = (opts) => {
   const ROOT = opts.ROOT;
@@ -35,6 +36,7 @@ module.exports = (opts) => {
         sourceMap: false,
       }),
       new webpack.optimize.DedupePlugin(),
+      new ExtractTextPlugin("styles.css")
     ],
     module: {
       loaders: [{
@@ -42,6 +44,12 @@ module.exports = (opts) => {
         loader: ['babel'],
         exclude: /node_modules/,
         include: path.join(ROOT, 'front', 'src')
+      }, {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract({
+                  fallbackLoader: "style-loader",
+                  loader: "css-loader"
+                })
       }]
     }
   };
