@@ -11,6 +11,7 @@ export default class TaskList extends Component {
   static propTypes = {
     removeTask: PropTypes.func.isRequired,
     toggleTask: PropTypes.func.isRequired,
+    editTask: PropTypes.func.isRequired,
     tasks: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       text: PropTypes.string.isRequired,
@@ -18,7 +19,7 @@ export default class TaskList extends Component {
     }))
   }
   render() {
-    const { tasks, removeTask, toggleTask } = this.props;
+    const { tasks, removeTask, toggleTask, editTask } = this.props;
 
     return (
       <ul style={style}>
@@ -26,6 +27,7 @@ export default class TaskList extends Component {
           <Task key={id}
                 toggle={toggleTask.bind(null, id, !props.done)}
                 remove={removeTask.bind(null, id)}
+                edit={editTask.bind(null, id)}
                 {...props} />
         )}
       </ul>

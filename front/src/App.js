@@ -68,6 +68,25 @@ export default class App extends Component {
       }))
     );
   }
+  editTask(cardId, id, text) {
+    const { cards } = this.state;
+    const cardIdx = cards.findIndex(c => c.id === cardId);
+    const taskIdx = cards[cardIdx].tasks.findIndex(t => t.id === id);
+
+    TaskApi.edit(id, text).then(newTask =>
+      this.setState(update(this.state, {
+        cards: {
+          [cardIdx]: {
+            tasks: {
+              [taskIdx]: {
+                $set: newTask
+              }
+            }
+          }
+        }
+      }))
+    );
+  }
   removeCard(id) {
     const cardIdx = this.state.cards.findIndex(c => c.id === id);
     CardApi.remove(id).then(_ =>
@@ -104,6 +123,7 @@ export default class App extends Component {
                 addTask={this.addTask.bind(this, id)}
                 removeTask={this.removeTask.bind(this, id)}
                 toggleTask={this.toggleTask.bind(this, id)}
+                editTask={this.editTask.bind(this, id)}
                 tasks={tasks}
                 name={name}
                 removeCard={this.removeCard.bind(this, id)} />

@@ -8,6 +8,7 @@ export default class Card extends Component {
     addTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     toggleTask: PropTypes.func.isRequired,
+    editTask: PropTypes.func.isRequired,
     tasks: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       text: PropTypes.string.isRequired,
@@ -21,7 +22,7 @@ export default class Card extends Component {
     }
   }
   render() {
-    const { name, addTask, removeTask, toggleTask, tasks } = this.props;
+    const { name, addTask, removeTask, toggleTask, editTask, tasks } = this.props;
     const style = {
       backgroundColor: '#eff0f5',
       padding: '0.4em',
@@ -42,7 +43,8 @@ export default class Card extends Component {
         <AddTask addTask={addTask} />
         <TaskList tasks={tasks}
                   toggleTask={toggleTask}
-                  removeTask={removeTask} />
+                  removeTask={removeTask}
+                  editTask={editTask} />
       </div>
     );
   }
