@@ -1,9 +1,51 @@
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom';
+import { DragSource, DropTarget } from 'react-dnd'
 
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
+const taskSource = {
+  beginDrag(props) {
+    return {
+      index: props.index,
+      id: props.id,
+      card: props.card
+    };
+  },
+  endDrag(props, monitor, component) {
+    const item = monitor.getItem();
+    props.savePosition(item, props.index);
+  },
+  isDragging(props, monitor) {
+    return props.id === monitor.getItem().id;
+  }
+};
+
+const taskTarget = {
+  hover(props, monitor, component) {
+    const item = monitor.getItem();
+    const dragIndex = item.index;
+    const hoverIndex = props.index;
+
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+
+    props.moveTask(item.card, props.card, dragIndex, hoverIndex);
+    item.index = hoverIndex;
+    item.card = props.card;
+  }
+};
+
+@DropTarget('Task', taskTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver()
+}))
+@DragSource('Task', taskSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))
 export default class Task extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
@@ -48,6 +90,7 @@ export default class Task extends Component {
   render() {
     const { editing } = this.state;
     const { text, done, remove, toggle } = this.props;
+    const { isOver, isDragging, connectDropTarget, connectDragSource } = this.props;
 
     const justView = (
       <div>
@@ -64,11 +107,11 @@ export default class Task extends Component {
                onKeyDown={::this.handleKeyDown} />
       </div>
     )
-    return (
-      <div className="task-item"
+    return connectDragSource(connectDropTarget(
+      <div className={"task-item" + (isDragging ? ' dragged' : '')}
            onDoubleClick={() => this.setState({ editing: true })}>
         { editing ? editor : justView }
       </div>
-    )
+    ));
   }
 }

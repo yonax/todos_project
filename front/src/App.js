@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
 import update from 'react-addons-update'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 import Card from './components/Card'
 import AddCard from './components/AddCard'
 import { TaskApi, CardApi } from './api'
 import '../styles/style.css';
 
+@DragDropContext(HTML5Backend)
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -107,21 +111,70 @@ export default class App extends Component {
       }))
     });
   }
+
+  savePosition(item) {
+    TaskApi
+      .move(item.id, item.card, item.index)
+      .then(newTask => console.log('saved: ', newTask));
+  }
+
+  moveTask(fromCard, toCard, dragIndex, hoverIndex) {
+    const cards = this.state.cards;
+
+    const fromIdx = cards.findIndex(c => c.id === fromCard);
+    const toIdx = cards.findIndex(c => c.id === toCard);
+
+    const dragTask = cards[fromIdx].tasks[dragIndex];
+    dragTask.card = toCard;
+
+    const updater =
+      fromIdx === toIdx
+      ? {
+          cards: {
+            [fromIdx]: {
+              tasks: {
+                $splice: [
+                  [dragIndex, 1],
+                  [hoverIndex, 0, dragTask]
+                ]
+              }
+            }
+          }
+        }
+      : {
+          cards: {
+            [fromIdx]: {
+              tasks: {
+                $splice: [[dragIndex, 1]]
+              }
+            },
+            [toIdx]: {
+              tasks: {
+                $splice: [[hoverIndex, 0, dragTask]]
+              }
+            }
+          }
+        }
+
+    this.setState(update(this.state, updater));
+  }
+
   render() {
     const { cards } = this.state;
     return (
       <div className="app">
         <AddCard addCard={::this.addCard} />
         <div className="cards">
-        {cards.map(({id, name, tasks}) =>
-          <Card key={id}
-                addTask={this.addTask.bind(this, id)}
-                removeTask={this.removeTask.bind(this, id)}
-                toggleTask={this.toggleTask.bind(this, id)}
-                editTask={this.editTask.bind(this, id)}
-                tasks={tasks}
-                name={name}
-                removeCard={this.removeCard.bind(this, id)} />
+        {cards.map(props =>
+          <Card key={props.id}
+                {...props}
+                addTask={this.addTask.bind(this, props.id)}
+                removeTask={this.removeTask.bind(this, props.id)}
+                toggleTask={this.toggleTask.bind(this, props.id)}
+                editTask={this.editTask.bind(this, props.id)}
+                savePosition={::this.savePosition}
+                removeCard={this.removeCard.bind(this, props.id)}
+                moveTask={::this.moveTask} />
         )}
         </div>
       </div>

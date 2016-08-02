@@ -13,18 +13,22 @@ export default class TaskList extends Component {
     }))
   }
   render() {
-    const { tasks, removeTask, toggleTask, editTask } = this.props;
+    const { tasks, removeTask, toggleTask, editTask,
+            savePosition, moveTask, connectDropTarget } = this.props;
 
     return (
       <div>
-        {tasks.map(({id, ...props}) =>
-          <Task key={id}
-                toggle={toggleTask.bind(null, id, !props.done)}
-                remove={removeTask.bind(null, id)}
-                edit={editTask.bind(null, id)}
+        {tasks.map((props, index) =>
+          <Task key={props.id}
+                index={index}
+                toggle={toggleTask.bind(null, props.id, !props.done)}
+                remove={removeTask.bind(null, props.id)}
+                edit={editTask.bind(null, props.id)}
+                savePosition={savePosition}
+                moveTask={moveTask}
                 {...props} />
         )}
       </div>
-    )
+    );
   }
 }

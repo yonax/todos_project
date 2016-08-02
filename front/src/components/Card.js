@@ -1,7 +1,26 @@
 import React, { Component, PropTypes } from 'react'
+import { DropTarget } from 'react-dnd'
 import AddTask from './AddTask'
 import TaskList from './TaskList'
 
+const cardTarget = {
+  hover(props, monitor, component) {
+    const item = monitor.getItem();
+
+    if (props.id === item.card) {
+      return;
+    }
+
+    const lastIdx = props.tasks.length;
+    props.moveTask(item.card, props.id, item.index, lastIdx);
+    item.card = props.id;
+    item.index = lastIdx;
+  }
+};
+
+@DropTarget('Task', cardTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget()
+}))
 export default class Card extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
@@ -22,8 +41,10 @@ export default class Card extends Component {
     }
   }
   render() {
-    const { name, addTask, removeTask, toggleTask, editTask, tasks } = this.props;
-    return (
+    const {
+      name, addTask, removeTask, toggleTask, editTask, tasks,
+      savePosition, moveTask, connectDropTarget } = this.props;
+    return connectDropTarget(
       <div className="card">
         <div className="card-header">
           <h3>{name}</h3>
@@ -35,7 +56,9 @@ export default class Card extends Component {
         <TaskList tasks={tasks}
                   toggleTask={toggleTask}
                   removeTask={removeTask}
-                  editTask={editTask} />
+                  editTask={editTask}
+                  savePosition={savePosition}
+                  moveTask={moveTask} />
       </div>
     );
   }
