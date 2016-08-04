@@ -84,6 +84,6 @@ html, body {
   flex-grow: 1;
 }
 
-.task-item.dragged {
+.dragged {
   opacity: 0;
 }

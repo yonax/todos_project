@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { DropTarget } from 'react-dnd'
+import { DropTarget, DragSource } from 'react-dnd'
 import AddTask from './AddTask'
 import TaskList from './TaskList'
 
-const cardTarget = {
+const cardTaskTarget = {
   hover(props, monitor, component) {
     const item = monitor.getItem();
 
@@ -18,8 +18,39 @@ const cardTarget = {
   }
 };
 
-@DropTarget('Task', cardTarget, (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget()
+const cardSource = {
+  beginDrag(props) {
+    return {
+      id: props.id
+    }
+  },
+  isDragging(props, monitor) {
+    return props.id === monitor.getItem().id;
+  }
+};
+
+const cardTarget = {
+  hover(props, monitor, component) {
+    const item = monitor.getItem();
+
+    if (props.id === item.id) {
+      return;
+    }
+
+    props.moveCard(item.id, props.id);
+    item.index = props.id;
+  }
+};
+
+@DragSource('Card', cardSource, (connect, monitor) => ({
+  connectCardSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))
+@DropTarget('Card', cardTarget, (connect, monitor) => ({
+  connectCardTarget: connect.dropTarget()
+}))
+@DropTarget('Task', cardTaskTarget, (connect, monitor) => ({
+  connectTaskTarget: connect.dropTarget()
 }))
 export default class Card extends Component {
   static propTypes = {
@@ -42,24 +73,29 @@ export default class Card extends Component {
   }
   render() {
     const {
-      name, addTask, removeTask, toggleTask, editTask, tasks,
-      savePosition, moveTask, connectDropTarget } = this.props;
-    return connectDropTarget(
-      <div className="card">
+      name,
+      connectCardSource,
+      connectCardTarget,
+      connectTaskTarget,
+      isDragging
+    } = this.props;
+
+    return connectCardSource(connectCardTarget(connectTaskTarget(
+      <div className={"card" + (isDragging ? ' dragged' : '')}>
         <div className="card-header">
           <h3>{name}</h3>
           <span className="remove-btn" onClick={::this.confirmRemove}>
               ✖
           </span>
         </div>
-        <AddTask addTask={addTask} />
-        <TaskList tasks={tasks}
-                  toggleTask={toggleTask}
-                  removeTask={removeTask}
-                  editTask={editTask}
-                  savePosition={savePosition}
-                  moveTask={moveTask} />
+        <AddTask addTask={this.props.addTask} />
+        <TaskList tasks={this.props.tasks}
+                  toggleTask={this.props.toggleTask}
+                  removeTask={this.props.removeTask}
+                  editTask={this.props.editTask}
+                  savePosition={this.props.savePosition}
+                  moveTask={this.props.moveTask} />
       </div>
-    );
+    )));
   }
 }

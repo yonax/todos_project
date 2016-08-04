@@ -158,7 +158,21 @@ export default class App extends Component {
 
     this.setState(update(this.state, updater));
   }
-
+  moveCard(sourceId, targetId) {
+    const cards = this.state.cards;
+    const sourceIdx = cards.findIndex(c => c.id === sourceId);
+    const targetIdx = cards.findIndex(c => c.id === targetId);
+    const sourceCard = cards[sourceIdx];
+    
+    this.setState(update(this.state, {
+      cards: {
+        $splice: [
+          [sourceIdx, 1],
+          [targetIdx, 0, sourceCard]
+        ]
+      }
+    }));
+  }
   render() {
     const { cards } = this.state;
     return (
@@ -174,7 +188,8 @@ export default class App extends Component {
                 editTask={this.editTask.bind(this, props.id)}
                 savePosition={::this.savePosition}
                 removeCard={this.removeCard.bind(this, props.id)}
-                moveTask={::this.moveTask} />
+                moveTask={::this.moveTask}
+                moveCard={::this.moveCard} />
         )}
         </div>
       </div>
