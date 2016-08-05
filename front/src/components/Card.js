@@ -26,7 +26,11 @@ const cardSource = {
   },
   isDragging(props, monitor) {
     return props.id === monitor.getItem().id;
-  }
+  },
+  endDrag(props, monitor, component) {
+    const item = monitor.getItem();
+    props.saveCardPosition(item.id);
+  },
 };
 
 const cardTarget = {

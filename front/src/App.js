@@ -163,7 +163,7 @@ export default class App extends Component {
     const sourceIdx = cards.findIndex(c => c.id === sourceId);
     const targetIdx = cards.findIndex(c => c.id === targetId);
     const sourceCard = cards[sourceIdx];
-    
+
     this.setState(update(this.state, {
       cards: {
         $splice: [
@@ -172,6 +172,10 @@ export default class App extends Component {
         ]
       }
     }));
+  }
+  saveCardPosition(id) {
+    const idx = this.state.cards.findIndex(c => c.id === id);
+    CardApi.move(id, idx);
   }
   render() {
     const { cards } = this.state;
@@ -187,6 +191,7 @@ export default class App extends Component {
                 toggleTask={this.toggleTask.bind(this, props.id)}
                 editTask={this.editTask.bind(this, props.id)}
                 savePosition={::this.savePosition}
+                saveCardPosition={::this.saveCardPosition}
                 removeCard={this.removeCard.bind(this, props.id)}
                 moveTask={::this.moveTask}
                 moveCard={::this.moveCard} />
