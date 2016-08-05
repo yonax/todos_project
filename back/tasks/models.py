@@ -3,7 +3,11 @@ from positions.fields import PositionField
 
 class Card(models.Model):
     name = models.CharField(max_length=255)
+    position = PositionField(default=-1)
 
+    class Meta:
+        ordering = ('position', )
+        
     def __str__(self):
         return self.name
 
